@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Bubble & Lime</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="screen">
+  <div class="login-card">
+    <h1 class="brand">Bubble <span>&amp;</span> Lime</h1>
+    <p class="tagline">Daily sales, sorted.</p>
+    <form id="loginForm">
+      <label>Email</label>
+      <input type="email" id="loginEmail" required placeholder="you@example.com" />
+      <label>Password</label>
+      <input type="password" id="loginPassword" required placeholder="••••••••" />
+      <button type="submit" class="btn btn-primary">Log In</button>
+      <p id="loginError" class="error-text"></p>
+    </form>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="appScreen" class="screen hidden">
+  <header class="topbar">
+    <h1 class="brand small">Bubble <span>&amp;</span> Lime</h1>
+    <button id="logoutBtn" class="btn-text">Log Out</button>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="today">Today</button>
+    <button class="tab-btn" data-tab="workers">Workers</button>
+    <button class="tab-btn" data-tab="week">Week End</button>
+    <button class="tab-btn" data-tab="month">Month End</button>
+    <button class="tab-btn" data-tab="history">History</button>
+  </nav>
+
+  <main class="content">
+
+    <!-- TODAY TAB -->
+    <section id="tab-today" class="tab-panel active">
+      <div class="card">
+        <h2>At a Glance</h2>
+        <div id="dashboardSummary" class="summary-box"></div>
+      </div>
+
+      <div id="todayLoading" class="muted">Loading today's status…</div>
+
+      <div id="todayForm" class="card hidden">
+        <h2>Today's Sales</h2>
+        <p class="muted" id="todayDateLabel"></p>
+        <div class="glass-grid" id="glassInputs"></div>
+
+        <h3>Workers Paid Today</h3>
+        <div id="workerPayList" class="worker-pay-list"></div>
+
+        <button id="submitDayBtn" class="btn btn-primary btn-block">Save Today's Entry</button>
+      </div>
+
+      <div id="todayDone" class="card hidden">
+        <h2>✅ Today's Already Logged</h2>
+        <p class="muted" id="todayDoneMeta"></p>
+        <div id="todaySummary" class="summary-box"></div>
+        <button id="editTodayBtn" class="btn btn-secondary btn-block">Edit This Entry</button>
+      </div>
+    </section>
+
+    <!-- WORKERS TAB -->
+    <section id="tab-workers" class="tab-panel">
+      <div class="card">
+        <h2>Workers</h2>
+        <div id="workerList" class="worker-list"></div>
+        <hr />
+        <h3>Add Worker</h3>
+        <div class="inline-form">
+          <input type="text" id="newWorkerName" placeholder="Worker name" />
+          <input type="number" id="newWorkerWage" placeholder="Daily wage (Rs)" />
+          <button id="addWorkerBtn" class="btn btn-secondary">Add</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- WEEK END TAB -->
+    <section id="tab-week" class="tab-panel">
+      <div class="card">
+        <h2 id="weekTitle">This Week</h2>
+        <div id="weekRunning" class="summary-box"></div>
+      </div>
+
+      <div id="weekExpenseForm" class="card">
+        <h3>Weekly Purchases</h3>
+        <div class="expense-grid">
+          <label>Water<input type="number" id="expWater" placeholder="Rs" /></label>
+          <label>Sugar<input type="number" id="expSugar" placeholder="Rs" /></label>
+          <label>Soda Ingredients<input type="number" id="expIngredients" placeholder="Rs" /></label>
+          <label>Glasses &amp; Straws<input type="number" id="expGlassesStraws" placeholder="Rs" /></label>
+        </div>
+        <button id="closeWeekBtn" class="btn btn-primary btn-block">Save This Week's Expenses</button>
+      </div>
+
+      <div id="weekDone" class="card hidden">
+        <h2 id="weekDoneTitle">Week Logged</h2>
+        <div id="weekSummary" class="summary-box"></div>
+      </div>
+    </section>
+
+    <!-- MONTH END TAB -->
+    <section id="tab-month" class="tab-panel">
+      <div class="card">
+        <h2 id="monthTitle">This Month</h2>
+        <div id="monthRunning" class="summary-box"></div>
+      </div>
+
+      <div id="monthExpenseForm" class="card">
+        <h3>Month-End Bills</h3>
+        <div class="expense-grid">
+          <label>Electricity Bill<input type="number" id="expElectricity" placeholder="Rs" /></label>
+          <label>Wi-Fi Bill<input type="number" id="expWifi" placeholder="Rs" /></label>
+          <label>Milk<input type="number" id="expMilk" placeholder="Rs" /></label>
+        </div>
+        <button id="closeMonthBtn" class="btn btn-primary btn-block">Close Out This Month</button>
+      </div>
+
+      <div id="monthDone" class="card hidden">
+        <h2 id="monthDoneTitle">Month Closed</h2>
+        <div id="monthSummary" class="summary-box"></div>
+      </div>
+    </section>
+
+    <!-- HISTORY TAB -->
+    <section id="tab-history" class="tab-panel">
+      <div class="card">
+        <h2 id="currentMonthLiveTitle">This Month (In Progress)</h2>
+        <div id="currentMonthLiveList" class="worker-list"></div>
+      </div>
+
+      <div class="card">
+        <h2>Search by Date</h2>
+        <div class="inline-form">
+          <input type="date" id="historySearchDate" />
+          <button id="historySearchBtn" class="btn btn-secondary">Find</button>
+        </div>
+        <div id="historySearchResult" class="summary-box hidden"></div>
+      </div>
+
+      <div class="card">
+        <h2>Closed Months</h2>
+        <div id="historyMonthList"></div>
+      </div>
+      <div id="historyDetail" class="card hidden">
+        <h2 id="historyDetailTitle"></h2>
+        <div id="historyMonthSummary" class="summary-box"></div>
+        <h3>Days This Month</h3>
+        <div id="historyDayList" class="worker-list"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
