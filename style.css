@@ -1,4 +1,4 @@
-/* ---------- Base ---------- */
+/*  ---------- Base ---------- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -103,7 +103,7 @@ body {
   text-decoration: underline;
 }
 
-/* ---------- App shell (clean, solid) ---------- */
+/* ----------       App shell (clean, solid)          ---------- */
 .topbar {
   display: flex;
   justify-content: space-between;
