@@ -14,14 +14,14 @@ This app replaces manual pen-and-paper calculations with a simple digital form. 
 
 ## Features
 
-- 🔐 **Secure login** — restricted to a fixed set of authorized accounts
-- 📊 **Live dashboard** — quick view of today's, this week's, and this month's totals
-- 📅 **Daily entry** — simple form-based logging with automatic calculations
-- 🧾 **Expense tracking** — separate weekly and monthly recurring cost categories
-- 📈 **Month-end reports** — full profit/loss breakdown with automatic 50/50 split
-- 🔍 **Searchable history** — look up any past day by date
-- ✏️ **Editable records** — correct mistakes without losing data integrity
-- 📱 **Mobile-friendly** — installable as a home-screen shortcut on any phone
+-  **Secure login** — restricted to a fixed set of authorized accounts
+-  **Live dashboard** — quick view of today's, this week's, and this month's totals
+-  **Daily entry** — simple form-based logging with automatic calculations
+-  **Expense tracking** — separate weekly and monthly recurring cost categories
+-  **Month-end reports** — full profit/loss breakdown with automatic 50/50 split
+-  **Searchable history** — look up any past day by date
+-  **Editable records** — correct mistakes without losing data integrity
+-  **Mobile-friendly** — installable as a home-screen shortcut on any phone
 
 ## Tech Stack
 
@@ -36,13 +36,6 @@ This app replaces manual pen-and-paper calculations with a simple digital form. 
 3. Recurring costs are logged on a weekly and monthly cadence
 4. At month's end, the app totals all income and expenses to produce a final profit/loss statement, split evenly between two account holders
 
-## Setup
-
-1. Clone this repository
-2. Create a free [Firebase](https://firebase.google.com/) project
-3. Enable **Authentication** (Email/Password) and **Firestore Database**
-4. Replace the `firebaseConfig` object in `app.js` with your own project's configuration
-5. Deploy using `firebase deploy`, or open `index.html` directly for local testing
 
 ## Notes
 
